@@ -9,10 +9,12 @@
            #:iterator-free
 
            #:translation-unit-declarations
+           #:translation-unit-language
 
            #:declaration-kind
            #:declaration-id
            #:declaration-name
+           #:declaration-mangled-name
            #:declaration-location
            #:declaration-type
 
@@ -33,9 +35,13 @@
 
            #:pointer-pointee-type
 
+           #:reference-pointee-type
+           #:reference-lvalue-p
+
            #:typedef-aliased-type
 
            #:enum-constants
+           #:enum-type
            #:enum-constant-value
 
            #:function-parameters
@@ -49,6 +55,8 @@
            #:field-width
            #:struct-fields
            #:union-fields
+           #:class-fields
+           #:class-methods
 
            #:make-options
            #:options-add-include-path
@@ -133,13 +141,13 @@
   (:parameter 8)
   (:typedef 9)
   (:method 10)
-  (:namespace 11)
-  (:constructor 12)
-  (:destructor 13)
-  (:converter 14)
-  (:type-reference 15)
-  (:template-reference 16)
-  (:enum-constant 17))
+  (:constructor 11)
+  (:destructor 12)
+  (:converter 13)
+  (:type-reference 14)
+  (:template-reference 15)
+  (:enum-constant 16)
+  (:macro 17))
 
 
 (cffi:defcenum calling-convention
@@ -174,6 +182,13 @@
   (:register 7))
 
 
+(cffi:defcenum language
+  (:unknown 0)
+  (:c 1)
+  (:c++ 2)
+  (:obj-c 3))
+
+
 (cffi:defctype collection :pointer)
 (cffi:defctype iterator :pointer)
 (cffi:defctype type :pointer)
@@ -186,158 +201,187 @@
 ;;;
 ;;; COLLECTION
 ;;;
-(cffi:defcfun (collection-iterator "resect_collection_iterator") iterator
+(cffi:defcfun ("resect_collection_iterator" collection-iterator) iterator
   (collection collection))
-(cffi:defcfun (iterator-next "resect_iterator_next") :boolean
+(cffi:defcfun ("resect_iterator_next" iterator-next) :boolean
   (iterator iterator))
-(cffi:defcfun (iterator-value "resect_iterator_value") :pointer
+(cffi:defcfun ("resect_iterator_value" iterator-value) :pointer
   (iterator iterator))
-(cffi:defcfun (iterator-free "resect_iterator_free") :void
+(cffi:defcfun ("resect_iterator_free" iterator-free) :void
   (iterator iterator))
 
 ;;;
 ;;; LOCATION
 ;;;
-(cffi:defcfun (location-line "resect_location_line") :unsigned-int
+(cffi:defcfun ("resect_location_line" location-line) :unsigned-int
   (location location))
-(cffi:defcfun (location-column "resect_location_column") :unsigned-int
+(cffi:defcfun ("resect_location_column" location-column) :unsigned-int
   (location location))
-(cffi:defcfun (location-name "resect_location_name") :string
+(cffi:defcfun ("resect_location_name" location-name) :string
   (location location))
 
 ;;;
 ;;; TYPE
 ;;;
-(cffi:defcfun (type-kind "resect_type_get_kind") type-kind
+(cffi:defcfun ("resect_type_get_kind" type-kind) type-kind
   (type type))
-(cffi:defcfun (type-category "resect_type_get_category") type-category
+(cffi:defcfun ("resect_type_get_category" type-category) type-category
   (type type))
-(cffi:defcfun (type-name "resect_type_get_name") :string
+(cffi:defcfun ("resect_type_get_name" type-name) :string
   (type type))
-(cffi:defcfun (type-size "resect_type_sizeof") :long-long
+(cffi:defcfun ("resect_type_sizeof" type-size) :long-long
   (type type))
-(cffi:defcfun (type-alignment "resect_type_alignof") :long-long
+(cffi:defcfun ("resect_type_alignof" type-alignment) :long-long
   (type type))
-(cffi:defcfun (type-field-offset "resect_type_offsetof") :long-long
+(cffi:defcfun ("resect_type_offsetof" type-field-offset) :long-long
   (type type)
   (field :string))
-(cffi:defcfun (type-declaration "resect_type_get_declaration") declaration
+(cffi:defcfun ("resect_type_get_declaration" type-declaration) declaration
   (type type))
 
 ;;;
 ;;; ARRAY
 ;;;
-(cffi:defcfun (array-size "resect_array_get_size") :long-long
+(cffi:defcfun ("resect_array_get_size" array-size) :long-long
   (type type))
-(cffi:defcfun (array-element-type "resect_array_get_element_type") type
+(cffi:defcfun ("resect_array_get_element_type" array-element-type) type
   (type type))
 
 ;;;
 ;;; POINTER
 ;;;
-(cffi:defcfun (pointer-pointee-type "resect_pointer_get_pointee_type") type
+(cffi:defcfun ("resect_pointer_get_pointee_type" pointer-pointee-type) type
   (type type))
+
+
+;;;
+;;; POINTER
+;;;
+(cffi:defcfun ("resect_reference_get_pointee_type" reference-pointee-type) type
+  (type type))
+(cffi:defcfun ("resect_reference_is_lvalue" reference-lvalue-p) :boolean
+  (type type))
+
 
 ;;;
 ;;; DECLARATION
 ;;;
-(cffi:defcfun (declaration-kind "resect_decl_get_kind") declaration-kind
+(cffi:defcfun ("resect_decl_get_kind" declaration-kind) declaration-kind
   (declaration declaration))
-(cffi:defcfun (declaration-id "resect_decl_get_id") :string
+(cffi:defcfun ("resect_decl_get_id" declaration-id) :string
   (declaration declaration))
-(cffi:defcfun (declaration-location "resect_decl_get_location") location
+(cffi:defcfun ("resect_decl_get_location" declaration-location) location
   (declaration declaration))
-(cffi:defcfun (declaration-name "resect_decl_get_name") :string
+(cffi:defcfun ("resect_decl_get_name" declaration-name) :string
   (declaration declaration))
-(cffi:defcfun (declaration-comment "resect_decl_get_comment") :string
+(cffi:defcfun ("resect_decl_get_mangled_name" declaration-mangled-name) :string
   (declaration declaration))
-(cffi:defcfun (declaration-type "resect_decl_get_type") type
+(cffi:defcfun ("resect_decl_get_comment" declaration-comment) :string
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_get_type" declaration-type) type
   (declaration declaration))
 
 
 ;;;
 ;;; UNIT
 ;;;
-(cffi:defcfun (translation-unit-declarations "resect_unit_declarations") collection
+(cffi:defcfun ("resect_unit_declarations" translation-unit-declarations) collection
+  (unit translation-unit))
+
+(cffi:defcfun ("resect_unit_get_language" translation-unit-language) language
   (unit translation-unit))
 
 
-(cffi:defcfun (field-offset "resect_field_get_offset") :long-long
+(cffi:defcfun ("resect_field_get_offset" field-offset) :long-long
   (record declaration))
-(cffi:defcfun (field-bitfield-p "resect_field_is_bitfield") :boolean
+(cffi:defcfun ("resect_field_is_bitfield" field-bitfield-p) :boolean
   (record declaration))
-(cffi:defcfun (field-width "resect_field_get_width") :long-long
+(cffi:defcfun ("resect_field_get_width" field-width) :long-long
   (record declaration))
 
 ;;;
 ;;; STRUCT
 ;;;
-(cffi:defcfun (struct-fields "resect_struct_fields") collection
+(cffi:defcfun ("resect_struct_fields" struct-fields) collection
   (struct declaration))
 
 ;;;
 ;;; UNION
 ;;;
-(cffi:defcfun (union-fields "resect_union_fields") collection
+(cffi:defcfun ("resect_union_fields" union-fields) collection
   (struct declaration))
+
+
+;;;
+;;; CLASS
+;;;
+(cffi:defcfun ("resect_class_fields" class-fields) collection
+  (struct declaration))
+
+
+(cffi:defcfun ("resect_class_methods" class-methods) collection
+  (struct declaration))
+
 
 ;;;
 ;;; ENUM
 ;;;
-(cffi:defcfun (enum-constant-value "resect_enum_constant_value") :long-long
+(cffi:defcfun ("resect_enum_constant_value" enum-constant-value) :long-long
   (enum-constant declaration))
-(cffi:defcfun (enum-constants "resect_enum_constants") collection
+(cffi:defcfun ("resect_enum_constants" enum-constants) collection
+  (enum declaration))
+(cffi:defcfun ("resect_enum_get_type" enum-type) type
   (enum declaration))
 
 ;;;
 ;;; FUNCTION
 ;;;
-(cffi:defcfun (function-parameters "resect_function_parameters") collection
+(cffi:defcfun ("resect_function_parameters" function-parameters) collection
   (function declaration))
-(cffi:defcfun (function-return-type "resect_function_get_return_type") type
+(cffi:defcfun ("resect_function_get_return_type" function-return-type) type
   (function declaration))
-(cffi:defcfun (function-variadic-p "resect_function_is_variadic") :boolean
+(cffi:defcfun ("resect_function_is_variadic" function-variadic-p) :boolean
   (function declaration))
-(cffi:defcfun (function-storage-class "resect_function_get_storage_class") storage-class
+(cffi:defcfun ("resect_function_get_storage_class" function-storage-class) storage-class
   (function declaration))
-(cffi:defcfun (function-calling-convention "resect_function_get_calling_convention") calling-convention
+(cffi:defcfun ("resect_function_get_calling_convention" function-calling-convention) calling-convention
   (function declaration))
 
 
 ;;;
 ;;; TYPEDEF
 ;;;
-(cffi:defcfun (typedef-aliased-type "resect_typedef_get_aliased_type") type
+(cffi:defcfun ("resect_typedef_get_aliased_type" typedef-aliased-type) type
   (typedef declaration))
 
 ;;;
 ;;; PARSING
 ;;;
-(cffi:defcfun (make-options "resect_options_create") options)
-(cffi:defcfun (options-add-include-path "resect_options_add_include_path") :void
+(cffi:defcfun ("resect_options_create" make-options) options)
+(cffi:defcfun ("resect_options_add_include_path" options-add-include-path) :void
   (opts options)
   (path :string))
-(cffi:defcfun (options-add-framework-path "resect_options_add_framework_path") :void
+(cffi:defcfun ("resect_options_add_framework_path" options-add-framework-path) :void
   (opts options)
   (path :string))
-(cffi:defcfun (options-add-language "resect_options_add_language") :void
+(cffi:defcfun ("resect_options_add_language" options-add-language) :void
   (opts options)
   (language :string))
-(cffi:defcfun (options-add-standard "resect_options_add_standard") :void
+(cffi:defcfun ("resect_options_add_standard" options-add-standard) :void
   (opts options)
   (standard :string))
-(cffi:defcfun (options-add-target "resect_options_add_target") :void
+(cffi:defcfun ("resect_options_add_target" options-add-target) :void
   "<arch><sub>-<vendor>-<sys>-<abi>"
   (opts options)
   (target :string))
-(cffi:defcfun (destroy-options "resect_options_free") :void
+(cffi:defcfun ("resect_options_free" destroy-options) :void
   (opts options))
 
 
-(cffi:defcfun (parse "resect_parse") translation-unit
+(cffi:defcfun ("resect_parse" parse) translation-unit
   (filename :string)
   (opts options))
 
 
-(cffi:defcfun (free "resect_free") :void
+(cffi:defcfun ("resect_free" free) :void
   (unit translation-unit))
