@@ -58,6 +58,12 @@
            #:class-fields
            #:class-methods
 
+           #:method-parameters
+           #:method-return-type
+           #:method-variadic-p
+           #:method-storage-class
+           #:method-calling-convention
+
            #:make-options
            #:options-add-include-path
            #:options-add-framework-path
@@ -321,6 +327,22 @@
 
 (cffi:defcfun ("resect_class_methods" class-methods) collection
   (struct declaration))
+
+
+;;;
+;;; METHOD
+;;;
+(cffi:defcfun ("resect_method_parameters" method-parameters) collection
+  (method declaration))
+(cffi:defcfun ("resect_method_get_return_type" method-return-type) type
+  (method declaration))
+(cffi:defcfun ("resect_method_is_variadic" method-variadic-p) :boolean
+  (method declaration))
+(cffi:defcfun ("resect_method_get_storage_class" method-storage-class) storage-class
+  (method declaration))
+(cffi:defcfun ("resect_method_get_calling_convention" method-calling-convention) calling-convention
+  (method declaration))
+
 
 
 ;;;
