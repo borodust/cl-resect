@@ -17,6 +17,7 @@
            #:declaration-mangled-name
            #:declaration-location
            #:declaration-type
+           #:declaration-template-parameters
 
            #:location-name
            #:location-line
@@ -45,7 +46,7 @@
            #:enum-constant-value
 
            #:function-parameters
-           #:function-return-type
+           #:function-result-type
            #:function-variadic-p
            #:function-storage-class
            #:function-calling-convention
@@ -53,13 +54,12 @@
            #:field-offset
            #:field-bitfield-p
            #:field-width
-           #:struct-fields
-           #:union-fields
-           #:class-fields
-           #:class-methods
+           #:record-fields
+           #:record-methods
+           #:record-parents
 
            #:method-parameters
-           #:method-return-type
+           #:method-result-type
            #:method-variadic-p
            #:method-storage-class
            #:method-calling-convention
@@ -122,7 +122,9 @@
   (:member-pointer 117)
   (:auto 118)
   (:attributed 163)
-  (:extended-vector 178))
+  (:extended-vector 178)
+
+  (:template-parameter 10000))
 
 
 (cffi:defcenum type-category
@@ -147,13 +149,9 @@
   (:parameter 8)
   (:typedef 9)
   (:method 10)
-  (:constructor 11)
-  (:destructor 12)
-  (:converter 13)
-  (:type-reference 14)
-  (:template-reference 15)
-  (:enum-constant 16)
-  (:macro 17))
+  (:enum-constant 11)
+  (:macro 12)
+  (:template-parameter 13))
 
 
 (cffi:defcenum calling-convention
@@ -286,6 +284,8 @@
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_type" declaration-type) type
   (declaration declaration))
+(cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
+  (declaration declaration))
 
 
 ;;;
@@ -306,27 +306,18 @@
   (record declaration))
 
 ;;;
-;;; STRUCT
+;;; RECORD
 ;;;
-(cffi:defcfun ("resect_struct_fields" struct-fields) collection
-  (struct declaration))
-
-;;;
-;;; UNION
-;;;
-(cffi:defcfun ("resect_union_fields" union-fields) collection
-  (struct declaration))
+(cffi:defcfun ("resect_record_fields" record-fields) collection
+  (class declaration))
 
 
-;;;
-;;; CLASS
-;;;
-(cffi:defcfun ("resect_class_fields" class-fields) collection
-  (struct declaration))
+(cffi:defcfun ("resect_record_methods" record-methods) collection
+  (class declaration))
 
 
-(cffi:defcfun ("resect_class_methods" class-methods) collection
-  (struct declaration))
+(cffi:defcfun ("resect_record_parents" record-parents) collection
+  (class declaration))
 
 
 ;;;
@@ -334,7 +325,7 @@
 ;;;
 (cffi:defcfun ("resect_method_parameters" method-parameters) collection
   (method declaration))
-(cffi:defcfun ("resect_method_get_return_type" method-return-type) type
+(cffi:defcfun ("resect_method_get_result_type" method-result-type) type
   (method declaration))
 (cffi:defcfun ("resect_method_is_variadic" method-variadic-p) :boolean
   (method declaration))
@@ -360,7 +351,7 @@
 ;;;
 (cffi:defcfun ("resect_function_parameters" function-parameters) collection
   (function declaration))
-(cffi:defcfun ("resect_function_get_return_type" function-return-type) type
+(cffi:defcfun ("resect_function_get_result_type" function-result-type) type
   (function declaration))
 (cffi:defcfun ("resect_function_is_variadic" function-variadic-p) :boolean
   (function declaration))
