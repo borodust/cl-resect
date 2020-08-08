@@ -13,7 +13,9 @@
 
            #:declaration-kind
            #:declaration-id
+           #:declaration-owner
            #:declaration-name
+           #:declaration-namespace
            #:declaration-mangled-name
            #:declaration-location
            #:declaration-type
@@ -29,7 +31,9 @@
            #:type-size
            #:type-alignment
            #:type-field-offset
+           #:type-const-qualified-p
            #:type-declaration
+           #:type-template-arguments
 
            #:array-size
            #:array-element-type
@@ -38,6 +42,10 @@
 
            #:reference-pointee-type
            #:reference-lvalue-p
+
+           #:function-proto-result-type
+           #:function-proto-parameters
+           #:function-proto-variadic-p
 
            #:typedef-aliased-type
 
@@ -240,8 +248,13 @@
 (cffi:defcfun ("resect_type_offsetof" type-field-offset) :long-long
   (type type)
   (field :string))
+(cffi:defcfun ("resect_type_is_const_qualified" type-const-qualified-p) :boolean
+  (type type))
 (cffi:defcfun ("resect_type_get_declaration" type-declaration) declaration
   (type type))
+(cffi:defcfun ("resect_type_template_arguments" type-template-arguments) collection
+  (type type))
+
 
 ;;;
 ;;; ARRAY
@@ -259,7 +272,7 @@
 
 
 ;;;
-;;; POINTER
+;;; REFERENCE
 ;;;
 (cffi:defcfun ("resect_reference_get_pointee_type" reference-pointee-type) type
   (type type))
@@ -268,15 +281,29 @@
 
 
 ;;;
+;;; FUNCTION PROTO
+;;;
+(cffi:defcfun ("resect_function_proto_get_result_type" function-proto-result-type) type
+  (type type))
+(cffi:defcfun ("resect_function_proto_parameters" function-proto-parameters) collection
+  (type type))
+(cffi:defcfun ("resect_function_proto_is_variadic" function-proto-variadic-p) :boolean
+  (type type))
+
+;;;
 ;;; DECLARATION
 ;;;
 (cffi:defcfun ("resect_decl_get_kind" declaration-kind) declaration-kind
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_id" declaration-id) :string
   (declaration declaration))
+(cffi:defcfun ("resect_decl_get_owner" declaration-owner) declaration
+  (declaration declaration))
 (cffi:defcfun ("resect_decl_get_location" declaration-location) location
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_name" declaration-name) :string
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_get_namespace" declaration-namespace) :string
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_mangled_name" declaration-mangled-name) :string
   (declaration declaration))
