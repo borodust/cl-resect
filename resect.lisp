@@ -65,6 +65,7 @@
            #:record-fields
            #:record-methods
            #:record-parents
+           #:record-abstract-p
 
            #:method-parameters
            #:method-result-type
@@ -337,13 +338,11 @@
 ;;;
 (cffi:defcfun ("resect_record_fields" record-fields) collection
   (class declaration))
-
-
 (cffi:defcfun ("resect_record_methods" record-methods) collection
   (class declaration))
-
-
 (cffi:defcfun ("resect_record_parents" record-parents) collection
+  (class declaration))
+(cffi:defcfun ("resect_record_is_abstract" record-abstract-p) :boolean
   (class declaration))
 
 
