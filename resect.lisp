@@ -19,6 +19,7 @@
            #:declaration-mangled-name
            #:declaration-location
            #:declaration-type
+           #:declaration-access-specifier
            #:declaration-template-parameters
 
            #:location-name
@@ -32,6 +33,7 @@
            #:type-alignment
            #:type-field-offset
            #:type-const-qualified-p
+           #:type-plain-old-data-p
            #:type-declaration
            #:type-template-arguments
 
@@ -202,6 +204,13 @@
   (:obj-c 3))
 
 
+(cffi:defcenum access-specifier
+  (:unknown 0)
+  (:public 1)
+  (:protected 2)
+  (:private 3))
+
+
 (cffi:defctype collection :pointer)
 (cffi:defctype iterator :pointer)
 (cffi:defctype type :pointer)
@@ -250,6 +259,8 @@
   (type type)
   (field :string))
 (cffi:defcfun ("resect_type_is_const_qualified" type-const-qualified-p) :boolean
+  (type type))
+(cffi:defcfun ("resect_type_is_pod" type-plain-old-data-p) :boolean
   (type type))
 (cffi:defcfun ("resect_type_get_declaration" type-declaration) declaration
   (type type))
@@ -311,6 +322,8 @@
 (cffi:defcfun ("resect_decl_get_comment" declaration-comment) :string
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_type" declaration-type) type
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_get_access_specifier" declaration-access-specifier) access-specifier
   (declaration declaration))
 (cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
   (declaration declaration))
