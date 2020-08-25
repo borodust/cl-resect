@@ -37,6 +37,9 @@
            #:type-declaration
            #:type-template-arguments
 
+           #:template-argument-type
+           #:template-argument-position
+
            #:array-size
            #:array-element-type
 
@@ -218,6 +221,8 @@
 (cffi:defctype location :pointer)
 (cffi:defctype translation-unit :pointer)
 (cffi:defctype options :pointer)
+(cffi:defctype template-argument :pointer)
+(cffi:defctype template-parameter :pointer)
 
 
 ;;;
@@ -267,6 +272,13 @@
 (cffi:defcfun ("resect_type_template_arguments" type-template-arguments) collection
   (type type))
 
+;;;
+;;; TEMPLATE ARGUMENT
+;;;
+(cffi:defcfun ("resect_template_argument_get_type" template-argument-type) type
+  (type template-argument))
+(cffi:defcfun ("resect_template_argument_get_position" template-argument-position) :int
+  (type template-argument))
 
 ;;;
 ;;; ARRAY
