@@ -37,7 +37,9 @@
            #:type-declaration
            #:type-template-arguments
 
+           #:template-argument-kind
            #:template-argument-type
+           #:template-argument-value
            #:template-argument-position
 
            #:array-size
@@ -75,6 +77,7 @@
            #:method-parameters
            #:method-result-type
            #:method-variadic-p
+           #:method-pure-virtual-p
            #:method-storage-class
            #:method-calling-convention
 
@@ -214,6 +217,19 @@
   (:private 3))
 
 
+(cffi:defcenum template-argument-kind
+  (:unknown 0)
+  (:null 1)
+  (:type 2)
+  (:declaration 3)
+  (:null-ptr 4)
+  (:integral 5)
+  (:template 6)
+  (:template-expansion 7)
+  (:expression 8)
+  (:pack 9))
+
+
 (cffi:defctype collection :pointer)
 (cffi:defctype iterator :pointer)
 (cffi:defctype type :pointer)
@@ -275,7 +291,11 @@
 ;;;
 ;;; TEMPLATE ARGUMENT
 ;;;
+(cffi:defcfun ("resect_template_argument_get_kind" template-argument-kind) template-argument-kind
+  (type template-argument))
 (cffi:defcfun ("resect_template_argument_get_type" template-argument-type) type
+  (type template-argument))
+(cffi:defcfun ("resect_template_argument_get_value" template-argument-value) :long-long
   (type template-argument))
 (cffi:defcfun ("resect_template_argument_get_position" template-argument-position) :int
   (type template-argument))
@@ -379,6 +399,8 @@
 (cffi:defcfun ("resect_method_get_result_type" method-result-type) type
   (method declaration))
 (cffi:defcfun ("resect_method_is_variadic" method-variadic-p) :boolean
+  (method declaration))
+(cffi:defcfun ("resect_method_is_pure_virtual" method-pure-virtual-p) :boolean
   (method declaration))
 (cffi:defcfun ("resect_method_get_storage_class" method-storage-class) storage-class
   (method declaration))
