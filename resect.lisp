@@ -74,12 +74,20 @@
            #:record-parents
            #:record-abstract-p
 
+           #:macro-function-like-p
+
            #:method-parameters
            #:method-result-type
            #:method-variadic-p
            #:method-pure-virtual-p
            #:method-storage-class
            #:method-calling-convention
+
+           #:variable-type
+           #:variable-kind
+           #:variable-to-int
+           #:variable-to-float
+           #:variable-to-string
 
            #:make-options
            #:options-add-include-path
@@ -228,6 +236,13 @@
   (:template-expansion 7)
   (:expression 8)
   (:pack 9))
+
+
+(cffi:defcenum variable-kind
+  (:unknown 0)
+  (:int 1)
+  (:float 2)
+  (:string 3))
 
 
 (cffi:defctype collection :pointer)
@@ -408,6 +423,11 @@
   (method declaration))
 
 
+;;;
+;;; MACRO
+;;;
+(cffi:defcfun ("resect_macro_is_function_like" macro-function-like-p) :boolean
+  (declaration declaration))
 
 ;;;
 ;;; ENUM
@@ -439,6 +459,20 @@
 ;;;
 (cffi:defcfun ("resect_typedef_get_aliased_type" typedef-aliased-type) type
   (typedef declaration))
+
+;;;
+;;; VARIABLE
+;;;
+(cffi:defcfun ("resect_variable_get_type" variable-type) type
+  (decl declaration))
+(cffi:defcfun ("resect_variable_get_kind" variable-kind) variable-kind
+  (decl declaration))
+(cffi:defcfun ("resect_variable_get_value_as_int" variable-to-int) :long-long
+  (decl declaration))
+(cffi:defcfun ("resect_variable_get_value_as_float" variable-to-float) :double
+  (decl declaration))
+(cffi:defcfun ("resect_variable_get_value_as_string" variable-to-string) :string
+  (decl declaration))
 
 ;;;
 ;;; PARSING
