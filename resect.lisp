@@ -21,6 +21,9 @@
            #:declaration-type
            #:declaration-access-specifier
            #:declaration-template-parameters
+           #:declaration-template-arguments
+           #:declaration-template
+           #:declaration-partially-specialized-p
 
            #:location-name
            #:location-line
@@ -372,7 +375,13 @@
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_access_specifier" declaration-access-specifier) access-specifier
   (declaration declaration))
+(cffi:defcfun ("resect_decl_get_template" declaration-template) declaration
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_is_partially_specialized" declaration-partially-specialized-p) :boolean
+  (declaration declaration))
 (cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_template_arguments" declaration-template-arguments) collection
   (declaration declaration))
 
 
