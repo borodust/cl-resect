@@ -98,6 +98,7 @@
            #:options-add-language
            #:options-add-standard
            #:options-add-target
+           #:options-enable-single-header-mode
            #:destroy-options))
 (cl:in-package :%resect)
 
@@ -245,7 +246,8 @@
   (:unknown 0)
   (:int 1)
   (:float 2)
-  (:string 3))
+  (:string 3)
+  (:other 4))
 
 
 (cffi:defctype collection :pointer)
@@ -503,6 +505,8 @@
   "<arch><sub>-<vendor>-<sys>-<abi>"
   (opts options)
   (target :string))
+(cffi:defcfun ("resect_options_single_header" options-enable-single-header-mode) :void
+  (opts options))
 (cffi:defcfun ("resect_options_free" destroy-options) :void
   (opts options))
 
