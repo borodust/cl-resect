@@ -99,6 +99,7 @@
            #:options-add-standard
            #:options-add-target
            #:options-enable-single-header-mode
+           #:options-enable-diagnostics
            #:destroy-options))
 (cl:in-package :%resect)
 
@@ -506,6 +507,8 @@
   (opts options)
   (target :string))
 (cffi:defcfun ("resect_options_single_header" options-enable-single-header-mode) :void
+  (opts options))
+(cffi:defcfun ("resect_options_print_diagnostics" options-enable-diagnostics) :void
   (opts options))
 (cffi:defcfun ("resect_options_free" destroy-options) :void
   (opts options))

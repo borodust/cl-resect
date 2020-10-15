@@ -32,7 +32,8 @@
                                 language
                                 standard
                                 target
-                                single-header-mode)
+                                single-header-mode
+                                diagnostics)
                         &body body)
   (alexandria:with-gensyms (path)
     (alexandria:once-only (language standard target)
@@ -57,6 +58,9 @@
                 ,@(when single-header-mode
                     `((when ,single-header-mode
                         (%resect:options-enable-single-header-mode ,opts))))
+                ,@(when diagnostics
+                    `((when ,diagnostics
+                        (%resect:options-enable-diagnostics ,opts))))
                 ,@body)
            (%resect:destroy-options ,opts))))))
 
@@ -66,13 +70,15 @@
                          language
                          standard
                          target
-                         single-header-mode)
+                         single-header-mode
+                         (diagnostics t))
   (with-options (opts :include-paths include-paths
                       :framework-paths framework-paths
                       :language language
                       :standard standard
                       :target target
-                      :single-header-mode single-header-mode)
+                      :single-header-mode single-header-mode
+                      :diagnostics diagnostics)
     (%resect:parse (namestring filename) opts)))
 
 
@@ -81,14 +87,16 @@
                                                   language
                                                   standard
                                                   target
-                                                  single-header-mode)
+                                                  single-header-mode
+                                                  (diagnostics t))
                                  &body body)
   `(let ((,unit (parse ,filename :include-paths ,include-paths
                                  :framework-paths ,framework-paths
                                  :language ,language
                                  :standard ,standard
                                  :target ,target
-                                 :single-header-mode ,single-header-mode)))
+                                 :single-header-mode ,single-header-mode
+                                 :diagnostics ,diagnostics)))
      (unwind-protect
           (progn ,@body)
        (%resect:free ,unit))))
