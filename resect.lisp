@@ -24,6 +24,7 @@
            #:declaration-template-arguments
            #:declaration-template
            #:declaration-partially-specialized-p
+           #:declaration-source
 
            #:location-name
            #:location-line
@@ -385,6 +386,8 @@
 (cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
   (declaration declaration))
 (cffi:defcfun ("resect_decl_template_arguments" declaration-template-arguments) collection
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_get_source" declaration-source) :string
   (declaration declaration))
 
 
