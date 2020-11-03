@@ -25,6 +25,7 @@
            #:declaration-template
            #:declaration-partially-specialized-p
            #:declaration-source
+           #:declaration-linkage
 
            #:location-name
            #:location-line
@@ -252,6 +253,14 @@
   (:other 4))
 
 
+(cffi:defcenum linkage-kind
+  (:unknown 0)
+  (:no-linkage 1)
+  (:internal 2)
+  (:unique-external 3)
+  (:external 4))
+
+
 (cffi:defctype collection :pointer)
 (cffi:defctype iterator :pointer)
 (cffi:defctype type :pointer)
@@ -388,6 +397,8 @@
 (cffi:defcfun ("resect_decl_template_arguments" declaration-template-arguments) collection
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_source" declaration-source) :string
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_get_linkage" declaration-linkage) linkage-kind
   (declaration declaration))
 
 
