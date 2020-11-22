@@ -41,6 +41,7 @@
            #:type-plain-old-data-p
            #:type-declaration
            #:type-template-arguments
+           #:type-fields
 
            #:template-parameter-kind
 
@@ -326,6 +327,8 @@
 (cffi:defcfun ("resect_type_get_declaration" type-declaration) declaration
   (type type))
 (cffi:defcfun ("resect_type_template_arguments" type-template-arguments) collection
+  (type type))
+(cffi:defcfun ("resect_type_fields" type-fields) collection
   (type type))
 
 ;;;
