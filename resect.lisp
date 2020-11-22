@@ -42,6 +42,8 @@
            #:type-declaration
            #:type-template-arguments
 
+           #:template-parameter-kind
+
            #:template-argument-kind
            #:template-argument-type
            #:template-argument-value
@@ -259,6 +261,13 @@
   (:internal 2)
   (:unique-external 3)
   (:external 4))
+
+
+(cffi:defcenum template-parameter-kind
+  (:unknown 0)
+  (:template 1)
+  (:type 2)
+  (:non-type 3))
 
 
 (cffi:defctype collection :pointer)
@@ -498,6 +507,13 @@
 (cffi:defcfun ("resect_variable_get_value_as_float" variable-to-float) :double
   (decl declaration))
 (cffi:defcfun ("resect_variable_get_value_as_string" variable-to-string) :string
+  (decl declaration))
+
+
+;;;
+;;; TEMPLATE PARAMETER
+;;;
+(cffi:defcfun ("resect_template_parameter_get_kind" template-parameter-kind) template-parameter-kind
   (decl declaration))
 
 ;;;
