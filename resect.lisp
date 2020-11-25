@@ -103,6 +103,7 @@
            #:options-add-language
            #:options-add-standard
            #:options-add-target
+           #:options-enable-intrinsic
            #:options-enable-single-header-mode
            #:options-enable-diagnostics
            #:destroy-options))
@@ -157,6 +158,7 @@
   (:member-pointer 117)
   (:auto 118)
   (:attributed 163)
+  (:atomic 177)
   (:extended-vector 178)
 
   (:template-parameter 10000))
@@ -269,6 +271,17 @@
   (:template 1)
   (:type 2)
   (:non-type 3))
+
+
+(cffi:defcenum resect-option-intrinsic
+  (:unknown 0)
+  (:sse 1)
+  (:sse2 2)
+  (:sse3 3)
+  (:sse41 4)
+  (:sse42 5)
+  (:avx 6)
+  (:avx2 7))
 
 
 (cffi:defctype collection :pointer)
@@ -539,6 +552,9 @@
   "<arch><sub>-<vendor>-<sys>-<abi>"
   (opts options)
   (target :string))
+(cffi:defcfun ("resect_options_intrinsic" options-enable-intrinsic) :void
+  (opts options)
+  (intrinsic resect-option-intrinsic))
 (cffi:defcfun ("resect_options_single_header" options-enable-single-header-mode) :void
   (opts options))
 (cffi:defcfun ("resect_options_print_diagnostics" options-enable-diagnostics) :void

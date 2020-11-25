@@ -71,7 +71,8 @@
                          standard
                          target
                          single-header-mode
-                         (diagnostics t))
+                         (diagnostics t)
+                         intrinsics)
   (with-options (opts :include-paths include-paths
                       :framework-paths framework-paths
                       :language language
@@ -79,6 +80,8 @@
                       :target target
                       :single-header-mode single-header-mode
                       :diagnostics diagnostics)
+    (loop for intrinsic in intrinsics
+          do (%resect:options-enable-intrinsic opts intrinsic))
     (%resect:parse (namestring filename) opts)))
 
 
@@ -88,7 +91,8 @@
                                                   standard
                                                   target
                                                   single-header-mode
-                                                  (diagnostics t))
+                                                  (diagnostics t)
+                                                  intrinsics)
                                  &body body)
   `(let ((,unit (parse ,filename :include-paths ,include-paths
                                  :framework-paths ,framework-paths
@@ -96,7 +100,8 @@
                                  :standard ,standard
                                  :target ,target
                                  :single-header-mode ,single-header-mode
-                                 :diagnostics ,diagnostics)))
+                                 :diagnostics ,diagnostics
+                                 :intrinsics ,intrinsics)))
      (unwind-protect
           (progn ,@body)
        (%resect:free ,unit))))
