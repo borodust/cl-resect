@@ -24,6 +24,7 @@
            #:declaration-template-arguments
            #:declaration-template
            #:declaration-partially-specialized-p
+           #:declaration-forward-p
            #:declaration-source
            #:declaration-linkage
 
@@ -416,6 +417,8 @@
 (cffi:defcfun ("resect_decl_get_template" declaration-template) declaration
   (declaration declaration))
 (cffi:defcfun ("resect_decl_is_partially_specialized" declaration-partially-specialized-p) :boolean
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_is_forward" declaration-forward-p) :boolean
   (declaration declaration))
 (cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
   (declaration declaration))
