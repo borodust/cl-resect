@@ -283,7 +283,8 @@
   (:sse41 4)
   (:sse42 5)
   (:avx 6)
-  (:avx2 7))
+  (:avx2 7)
+  (:neon 8))
 
 
 (cffi:defctype collection :pointer)
