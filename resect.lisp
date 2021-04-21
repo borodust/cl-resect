@@ -72,6 +72,7 @@
            #:function-parameters
            #:function-result-type
            #:function-variadic-p
+           #:function-inlined-p
            #:function-storage-class
            #:function-calling-convention
 
@@ -505,6 +506,8 @@
 (cffi:defcfun ("resect_function_get_result_type" function-result-type) type
   (function declaration))
 (cffi:defcfun ("resect_function_is_variadic" function-variadic-p) :boolean
+  (function declaration))
+(cffi:defcfun ("resect_function_is_inlined" function-inlined-p) :boolean
   (function declaration))
 (cffi:defcfun ("resect_function_get_storage_class" function-storage-class) storage-class
   (function declaration))
