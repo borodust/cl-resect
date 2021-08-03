@@ -101,6 +101,10 @@
            #:variable-to-string
 
            #:make-options
+           #:options-include-definition
+           #:options-include-source
+           #:options-exclude-definition
+           #:options-exclude-source
            #:options-add-include-path
            #:options-add-framework-path
            #:options-add-language
@@ -562,6 +566,18 @@
   "<arch><sub>-<vendor>-<sys>-<abi>"
   (opts options)
   (target :string))
+(cffi:defcfun ("resect_options_include_definition" options-include-definition) :void
+  (opts options)
+  (pattern :string))
+(cffi:defcfun ("resect_options_include_source" options-include-source) :void
+  (opts options)
+  (pattern :string))
+(cffi:defcfun ("resect_options_exclude_definition" options-exclude-definition) :void
+  (opts options)
+  (pattern :string))
+(cffi:defcfun ("resect_options_exclude_source" options-exclude-source) :void
+  (opts options)
+  (pattern :string))
 (cffi:defcfun ("resect_options_intrinsic" options-enable-intrinsic) :void
   (opts options)
   (intrinsic resect-option-intrinsic))

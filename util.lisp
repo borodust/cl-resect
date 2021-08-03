@@ -33,9 +33,13 @@
                                 standard
                                 target
                                 single-header-mode
-                                diagnostics)
+                                diagnostics
+                                include-definitions
+                                include-sources
+                                exclude-definitions
+                                exclude-sources)
                         &body body)
-  (alexandria:with-gensyms (path)
+  (alexandria:with-gensyms (path val)
     (alexandria:once-only (language standard target)
       `(let ((,opts (%resect:make-options)))
          (unwind-protect
@@ -61,6 +65,18 @@
                 ,@(when diagnostics
                     `((when ,diagnostics
                         (%resect:options-enable-diagnostics ,opts))))
+                ,@(when include-definitions
+                    `((loop for ,val in ,include-definitions
+                            do (%resect:options-include-definition ,opts ,val))))
+                ,@(when include-sources
+                    `((loop for ,val in ,include-sources
+                            do (%resect:options-include-source ,opts ,val))))
+                ,@(when exclude-definitions
+                    `((loop for ,val in ,exclude-definitions
+                            do (%resect:options-exclude-definition ,opts ,val))))
+                ,@(when exclude-sources
+                    `((loop for ,val in ,exclude-sources
+                            do (%resect:options-exclude-source ,opts ,val))))
                 ,@body)
            (%resect:destroy-options ,opts))))))
 
@@ -72,14 +88,22 @@
                          target
                          single-header-mode
                          (diagnostics t)
-                         intrinsics)
+                         intrinsics
+                         include-definitions
+                         include-sources
+                         exclude-definitions
+                         exclude-sources)
   (with-options (opts :include-paths include-paths
                       :framework-paths framework-paths
                       :language language
                       :standard standard
                       :target target
                       :single-header-mode single-header-mode
-                      :diagnostics diagnostics)
+                      :diagnostics diagnostics
+                      :include-definitions include-definitions
+                      :include-sources include-sources
+                      :exclude-definitions exclude-definitions
+                      :exclude-sources exclude-sources)
     (loop for intrinsic in intrinsics
           do (%resect:options-enable-intrinsic opts intrinsic))
     (%resect:parse (namestring filename) opts)))
@@ -92,7 +116,11 @@
                                                   target
                                                   single-header-mode
                                                   (diagnostics t)
-                                                  intrinsics)
+                                                  intrinsics
+                                                  include-definitions
+                                                  include-sources
+                                                  exclude-definitions
+                                                  exclude-sources)
                                  &body body)
   `(let ((,unit (parse ,filename :include-paths ,include-paths
                                  :framework-paths ,framework-paths
@@ -101,7 +129,11 @@
                                  :target ,target
                                  :single-header-mode ,single-header-mode
                                  :diagnostics ,diagnostics
-                                 :intrinsics ,intrinsics)))
+                                 :intrinsics ,intrinsics
+                                 :include-definitions ,include-definitions
+                                 :include-sources ,include-sources
+                                 :exclude-definitions ,exclude-definitions
+                                 :exclude-sources ,exclude-sources)))
      (unwind-protect
           (progn ,@body)
        (%resect:free ,unit))))
