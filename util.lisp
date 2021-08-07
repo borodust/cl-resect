@@ -37,9 +37,10 @@
                                 include-definitions
                                 include-sources
                                 exclude-definitions
-                                exclude-sources)
+                                exclude-sources
+                                defines)
                         &body body)
-  (alexandria:with-gensyms (path val)
+  (alexandria:with-gensyms (path val name)
     (alexandria:once-only (language standard target)
       `(let ((,opts (%resect:make-options)))
          (unwind-protect
@@ -77,6 +78,9 @@
                 ,@(when exclude-sources
                     `((loop for ,val in ,exclude-sources
                             do (%resect:options-exclude-source ,opts ,val))))
+                ,@(when defines
+                    `((loop for (,name ,val) in ,defines
+                            do (%resect:options-add-define ,opts ,name ,val))))
                 ,@body)
            (%resect:destroy-options ,opts))))))
 
@@ -92,7 +96,8 @@
                          include-definitions
                          include-sources
                          exclude-definitions
-                         exclude-sources)
+                         exclude-sources
+                         defines)
   (with-options (opts :include-paths include-paths
                       :framework-paths framework-paths
                       :language language
@@ -103,7 +108,8 @@
                       :include-definitions include-definitions
                       :include-sources include-sources
                       :exclude-definitions exclude-definitions
-                      :exclude-sources exclude-sources)
+                      :exclude-sources exclude-sources
+                      :defines defines)
     (loop for intrinsic in intrinsics
           do (%resect:options-enable-intrinsic opts intrinsic))
     (%resect:parse (namestring filename) opts)))
@@ -120,7 +126,8 @@
                                                   include-definitions
                                                   include-sources
                                                   exclude-definitions
-                                                  exclude-sources)
+                                                  exclude-sources
+                                                  defines)
                                  &body body)
   `(let ((,unit (parse ,filename :include-paths ,include-paths
                                  :framework-paths ,framework-paths
@@ -133,7 +140,8 @@
                                  :include-definitions ,include-definitions
                                  :include-sources ,include-sources
                                  :exclude-definitions ,exclude-definitions
-                                 :exclude-sources ,exclude-sources)))
+                                 :exclude-sources ,exclude-sources
+                                 :defines ,defines)))
      (unwind-protect
           (progn ,@body)
        (%resect:free ,unit))))

@@ -112,6 +112,7 @@
            #:options-add-language
            #:options-add-standard
            #:options-add-target
+           #:options-add-define
            #:options-enable-intrinsic
            #:options-enable-single-header-mode
            #:options-enable-diagnostics
@@ -577,6 +578,10 @@
   "<arch><sub>-<vendor>-<sys>-<abi>"
   (opts options)
   (target :string))
+(cffi:defcfun ("resect_options_add_define" options-add-define) :void
+  (opts options)
+  (name :string)
+  (value :string))
 (cffi:defcfun ("resect_options_include_definition" options-include-definition) :void
   (opts options)
   (pattern :string))
