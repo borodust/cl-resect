@@ -45,6 +45,7 @@
            #:type-plain-old-data-p
            #:type-declaration
            #:type-template-arguments
+           #:type-undeclared-p
            #:type-fields
 
            #:template-parameter-kind
@@ -361,8 +362,11 @@
   (type type))
 (cffi:defcfun ("resect_type_template_arguments" type-template-arguments) collection
   (type type))
+(cffi:defcfun ("resect_type_is_undeclared" type-undeclared-p) :boolean
+  (type type))
 (cffi:defcfun ("resect_type_fields" type-fields) collection
   (type type))
+
 
 ;;;
 ;;; TEMPLATE ARGUMENT
