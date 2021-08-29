@@ -169,7 +169,6 @@
   (:dependent-sized-array 116)
   (:member-pointer 117)
   (:auto 118)
-  (:attributed 163)
   (:atomic 177)
   (:extended-vector 178)
 
