@@ -100,6 +100,7 @@
 
            #:variable-type
            #:variable-kind
+           #:variable-storage-class
            #:variable-to-int
            #:variable-to-float
            #:variable-to-string
@@ -556,7 +557,8 @@
   (decl declaration))
 (cffi:defcfun ("resect_variable_get_value_as_string" variable-to-string) :string
   (decl declaration))
-
+(cffi:defcfun ("resect_variable_get_storage_class" variable-storage-class) storage-class
+  (decl declaration))
 
 ;;;
 ;;; TEMPLATE PARAMETER
