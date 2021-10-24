@@ -72,6 +72,8 @@
            #:enum-constants
            #:enum-type
            #:enum-constant-value
+           #:enum-constant-unsigned-value
+           #:enum-constant-unsigned-p
 
            #:function-parameters
            #:function-result-type
@@ -517,6 +519,10 @@
 ;;; ENUM
 ;;;
 (cffi:defcfun ("resect_enum_constant_value" enum-constant-value) :long-long
+  (enum-constant declaration))
+(cffi:defcfun ("resect_enum_constant_unsigned_value" enum-constant-unsigned-value) :unsigned-long-long
+  (enum-constant declaration))
+(cffi:defcfun ("resect_enum_constant_is_unsigned" enum-constant-unsigned-p) :boolean
   (enum-constant declaration))
 (cffi:defcfun ("resect_enum_constants" enum-constants) collection
   (enum declaration))
