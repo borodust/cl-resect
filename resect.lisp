@@ -96,6 +96,7 @@
            #:method-result-type
            #:method-variadic-p
            #:method-pure-virtual-p
+           #:method-virtual-p
            #:method-const-p
            #:method-storage-class
            #:method-calling-convention
@@ -500,6 +501,8 @@
 (cffi:defcfun ("resect_method_is_variadic" method-variadic-p) :boolean
   (method declaration))
 (cffi:defcfun ("resect_method_is_pure_virtual" method-pure-virtual-p) :boolean
+  (method declaration))
+(cffi:defcfun ("resect_method_is_virtual" method-virtual-p) :boolean
   (method declaration))
 (cffi:defcfun ("resect_method_is_const" method-const-p) :boolean
   (method declaration))
