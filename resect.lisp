@@ -98,6 +98,7 @@
            #:method-pure-virtual-p
            #:method-virtual-p
            #:method-const-p
+           #:method-deleted-p
            #:method-storage-class
            #:method-calling-convention
 
@@ -505,6 +506,8 @@
 (cffi:defcfun ("resect_method_is_virtual" method-virtual-p) :boolean
   (method declaration))
 (cffi:defcfun ("resect_method_is_const" method-const-p) :boolean
+  (method declaration))
+(cffi:defcfun ("resect_method_is_deleted" method-deleted-p) :boolean
   (method declaration))
 (cffi:defcfun ("resect_method_get_storage_class" method-storage-class) storage-class
   (method declaration))
