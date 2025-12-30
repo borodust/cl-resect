@@ -47,6 +47,9 @@
            #:type-template-arguments
            #:type-undeclared-p
            #:type-fields
+           #:field-name
+           #:field-type
+           #:field-offset
 
            #:template-parameter-kind
 
@@ -82,9 +85,9 @@
            #:function-storage-class
            #:function-calling-convention
 
-           #:field-offset
-           #:field-bitfield-p
-           #:field-width
+           #:field-declaration-offset
+           #:field-declaration-bitfield-p
+           #:field-declaration-width
            #:record-fields
            #:record-methods
            #:record-parents
@@ -314,6 +317,7 @@
 (cffi:defctype collection :pointer)
 (cffi:defctype iterator :pointer)
 (cffi:defctype type :pointer)
+(cffi:defctype field :pointer)
 (cffi:defctype declaration :pointer)
 (cffi:defctype location :pointer)
 (cffi:defctype translation-unit :pointer)
@@ -372,6 +376,12 @@
   (type type))
 (cffi:defcfun ("resect_type_fields" type-fields) collection
   (type type))
+(cffi:defcfun ("resect_field_get_name" field-name) :string
+  (field field))
+(cffi:defcfun ("resect_field_get_type" field-type) type
+  (field field))
+(cffi:defcfun ("resect_field_get_offset" field-offset) :long-long
+  (field field))
 
 
 ;;;
@@ -472,11 +482,11 @@
   (unit translation-unit))
 
 
-(cffi:defcfun ("resect_field_get_offset" field-offset) :long-long
+(cffi:defcfun ("resect_field_decl_get_offset" field-declaration-offset) :long-long
   (record declaration))
-(cffi:defcfun ("resect_field_is_bitfield" field-bitfield-p) :boolean
+(cffi:defcfun ("resect_field_decl_is_bitfield" field-declaration-bitfield-p) :boolean
   (record declaration))
-(cffi:defcfun ("resect_field_get_width" field-width) :long-long
+(cffi:defcfun ("resect_field_decl-get_width" field-declaration-width) :long-long
   (record declaration))
 
 ;;;
