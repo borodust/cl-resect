@@ -23,6 +23,7 @@
            #:declaration-template-p
            #:declaration-template-parameters
            #:declaration-template-arguments
+           #:declaration-template-specializations
            #:declaration-template
            #:declaration-partially-specialized-p
            #:declaration-forward-p
@@ -464,6 +465,8 @@
 (cffi:defcfun ("resect_decl_template_parameters" declaration-template-parameters) collection
   (declaration declaration))
 (cffi:defcfun ("resect_decl_template_arguments" declaration-template-arguments) collection
+  (declaration declaration))
+(cffi:defcfun ("resect_decl_template_specializations" declaration-template-specializations) collection
   (declaration declaration))
 (cffi:defcfun ("resect_decl_get_source" declaration-source) :string
   (declaration declaration))
