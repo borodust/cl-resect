@@ -117,6 +117,7 @@
            #:method-deleted-p
            #:method-storage-class
            #:method-calling-convention
+           #:method-ref-qualifier
 
            #:variable-type
            #:variable-kind
@@ -330,6 +331,12 @@
   (:info 3)
   (:debug 4)
   (:all 5))
+
+
+(cffi:defcenum ref-qualifier
+  (:none 0)
+  (:lvalue 1)
+  (:rvalue 2))
 
 
 (cffi:defctype collection :pointer)
@@ -570,6 +577,8 @@
 (cffi:defcfun ("resect_method_get_storage_class" method-storage-class) storage-class
   (method declaration))
 (cffi:defcfun ("resect_method_get_calling_convention" method-calling-convention) calling-convention
+  (method declaration))
+(cffi:defcfun ("resect_method_get_ref_qualifier" method-ref-qualifier) ref-qualifier
   (method declaration))
 
 
