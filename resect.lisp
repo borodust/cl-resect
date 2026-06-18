@@ -61,6 +61,8 @@
            #:type-method-declaration
            #:type-method-static-p
            #:type-method-const-p
+           #:type-method-defaulted-p
+           #:type-method-constructor-kind
            #:type-base-classes
 
            #:template-parameter-kind
@@ -105,6 +107,7 @@
            #:record-methods
            #:record-parents
            #:record-abstract-p
+           #:record-has-inherited-constructor-p
 
            #:macro-function-like-p
 
@@ -115,8 +118,10 @@
            #:method-virtual-p
            #:method-const-p
            #:method-deleted-p
+           #:method-constructor-p
            #:method-storage-class
            #:method-calling-convention
+           #:method-ref-qualifier
 
            #:variable-type
            #:variable-kind
@@ -275,6 +280,15 @@
   (:private 3))
 
 
+(cffi:defcenum constructor-kind
+  (:invalid 0)  ; i.e., not a constructor
+  (:default 1)
+  (:copy 2)
+  (:move 3)
+  (:converting 4)
+  (:other 5))
+
+
 (cffi:defcenum template-argument-kind
   (:unknown 0)
   (:null 1)
@@ -330,6 +344,12 @@
   (:info 3)
   (:debug 4)
   (:all 5))
+
+
+(cffi:defcenum ref-qualifier
+  (:none 0)
+  (:lvalue 1)
+  (:rvalue 2))
 
 
 (cffi:defctype collection :pointer)
@@ -420,6 +440,10 @@
 (cffi:defcfun ("resect_type_method_is_static" type-method-static-p) :boolean
   (method type-method))
 (cffi:defcfun ("resect_type_method_is_const" type-method-const-p) :boolean
+  (method type-method))
+(cffi:defcfun ("resect_type_method_is_defaulted" type-method-defaulted-p) :boolean
+  (method type-method))
+(cffi:defcfun ("resect_type_method_constructor_kind" type-method-constructor-kind) constructor-kind
   (method type-method))
 (cffi:defcfun ("resect_type_method_get_proto" type-method-prototype) type
   (method type-method))
@@ -548,6 +572,8 @@
   (class declaration))
 (cffi:defcfun ("resect_record_is_abstract" record-abstract-p) :boolean
   (class declaration))
+(cffi:defcfun ("resect_record_has_inherited_constructor" record-has-inherited-constructor-p) :boolean
+  (class declaration))
 
 
 ;;;
@@ -567,9 +593,13 @@
   (method declaration))
 (cffi:defcfun ("resect_method_is_deleted" method-deleted-p) :boolean
   (method declaration))
+(cffi:defcfun ("resect_method_is_constructor" method-constructor-p) :boolean
+  (method declaration))
 (cffi:defcfun ("resect_method_get_storage_class" method-storage-class) storage-class
   (method declaration))
 (cffi:defcfun ("resect_method_get_calling_convention" method-calling-convention) calling-convention
+  (method declaration))
+(cffi:defcfun ("resect_method_get_ref_qualifier" method-ref-qualifier) ref-qualifier
   (method declaration))
 
 
