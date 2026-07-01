@@ -47,6 +47,10 @@
            #:type-declaration
            #:type-template-arguments
            #:type-undeclared-p
+           #:type-has-copy-constructor-p
+           #:type-copy-constructor-deleted-p
+           #:type-has-copy-assignment-p
+           #:type-copy-assignment-deleted-p
            #:type-fields
            #:type-field-id
            #:type-field-name
@@ -394,6 +398,14 @@
 (cffi:defcfun ("resect_type_template_arguments" type-template-arguments) collection
   (type type))
 (cffi:defcfun ("resect_type_is_undeclared" type-undeclared-p) :boolean
+  (type type))
+(cffi:defcfun ("resect_type_has_copy_constructor" type-has-copy-constructor-p) :boolean
+  (type type))
+(cffi:defcfun ("resect_type_copy_constructor_deleted" type-copy-constructor-deleted-p) :boolean
+  (type type))
+(cffi:defcfun ("resect_type_has_copy_assignment" type-has-copy-assignment-p) :boolean
+  (type type))
+(cffi:defcfun ("resect_type_copy_assignment_deleted" type-copy-assignment-deleted-p) :boolean
   (type type))
 (cffi:defcfun ("resect_type_fields" type-fields) collection
   (type type))
