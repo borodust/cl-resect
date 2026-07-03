@@ -145,6 +145,7 @@
            #:options-enable-single-header-mode
            #:options-enable-diagnostics
            #:options-diagnostics-level
+           #:options-visibility
            #:destroy-options))
 (cl:in-package :%resect)
 
@@ -699,6 +700,9 @@
 (cffi:defcfun ("resect_options_diagnostics_level" options-diagnostics-level) :void
   (opts options)
   (level resect-option-diagnostics-level))
+(cffi:defcfun ("resect_options_visibility" options-visibility) :void
+  (opts options)
+  (visibility :string))
 (cffi:defcfun ("resect_options_free" destroy-options) :void
   (opts options))
 
